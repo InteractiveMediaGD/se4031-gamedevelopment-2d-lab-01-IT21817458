@@ -2,23 +2,24 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public int damage = 20;
+    public int damage = 10;
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        PlayerHealth player = other.GetComponent<PlayerHealth>();
+  
+        if (other.CompareTag("Projectile"))
+        {
+            FindObjectOfType<ScoreManager>().AddScore(5);
+            Destroy(other.gameObject);
+            Destroy(gameObject);
+            return;
+        }
 
+      
+        PlayerHealth player = other.GetComponent<PlayerHealth>();
         if (player != null)
         {
             player.TakeDamage(damage);
-            Destroy(gameObject);
-        }
-    }
-
-    void Update()
-    {
-        if (transform.position.x < -10f)
-        {
             Destroy(gameObject);
         }
     }
